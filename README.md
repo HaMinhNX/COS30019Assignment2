@@ -16,10 +16,14 @@ Step 3: Open the terminal and use the following command format:
 ```
 
 Explanation:
+
 <filename>: the test case (Ex: input.txt, …)
+
 <method>: Choose one of the following methods (TT, FC, BC)
+
+```bash
 TT: Truth table
 FC: Forward chaining
 BC: Backward chaining
-
+```
 (TT can run General Knowledge base and Horn-form Knowledge base, while FC and BC can only run Horn-form base)
