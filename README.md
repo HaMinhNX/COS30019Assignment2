@@ -17,9 +17,9 @@ Step 3: Open the terminal and use the following command format:
 
 Explanation:
 
-<filename>: the test case (Ex: input.txt, …)
+filename: the test case (Ex: input.txt, …)
 
-<method>: Choose one of the following methods (TT, FC, BC)
+method: Choose one of the following methods (TT, FC, BC)
 
 ```bash
 TT: Truth table
