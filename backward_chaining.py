@@ -29,11 +29,10 @@ def parse_horn_clauses(kb_clauses):
                 kb_rules[conclusion] = []
             kb_rules[conclusion].append(premises)
         else:
-            # Fact (no premises)
             fact = clause.strip()
             if fact not in kb_rules:
                 kb_rules[fact] = []
-            kb_rules[fact].append([])  # Empty premises list means it's a fact
+            kb_rules[fact].append([])  
     
     return kb_rules
 
@@ -56,23 +55,19 @@ def bc_entails(kb_clauses, query):
         if path is None:
             path = set()
         
-        # Check for circular reasoning
         if symbol in path:
             return False
         
         path.add(symbol)
         
-        # If symbol has no rules (and is not a fact), it cannot be proven
         if symbol not in kb_rules:
             return False
         
-        # Try each rule for this symbol
         for premises in kb_rules[symbol]:
-            if not premises:  # It's a fact
+            if not premises:  
                 entailed.add(symbol)
                 return True
             
-            # Check all premises
             if all(bc_check(premise, path.copy()) for premise in premises):
                 entailed.add(symbol)
                 return True
@@ -81,10 +76,8 @@ def bc_entails(kb_clauses, query):
     
     result = bc_check(query)
     
-    # Determine the entailed symbols in the proof
     proof_symbols = []
     if result:
-        # Start with the query and work backwards to reconstruct proof path
         proof_stack = [query]
         visited = set()
         
@@ -97,7 +90,6 @@ def bc_entails(kb_clauses, query):
             visited.add(current)
             proof_symbols.append(current)
             
-            # Add premises that led to current symbol
             if current in kb_rules:
                 for premises in kb_rules[current]:
                     if all(premise in entailed for premise in premises):

@@ -25,7 +25,6 @@ def parse_horn_clause(clause):
             
         return premises, conclusion
     else:
-        # Fact (no premises)
         return [], clause.strip()
 
 def fc_entails(kb_clauses, query):
@@ -40,34 +39,28 @@ def fc_entails(kb_clauses, query):
         tuple: (bool, list) where bool is True if KB entails query and list is the 
                list of entailed symbols
     """
-    # Parse all clauses to get premises and conclusions
     horn_clauses = [parse_horn_clause(clause) for clause in kb_clauses]
-    
-    # Extract all symbols from the KB
+
+    # read symbols from testcase
     symbols = set()
     for premises, conclusion in horn_clauses:
         symbols.update(premises)
         symbols.add(conclusion)
     
-    # Initialize the count of premises for each clause
     count = {}
     for i, (premises, _) in enumerate(horn_clauses):
         count[i] = len(premises)
     
-    # Initialize inferred and agenda
+
     inferred = {symbol: False for symbol in symbols}
     agenda = []
     
-    # Add facts to agenda
     for premises, conclusion in horn_clauses:
-        if not premises:  # This is a fact
+        if not premises:  
             agenda.append(conclusion)
             inferred[conclusion] = True
     
-    # Track the order of entailed symbols
     entailed_symbols = []
-    
-    # Forward chaining
     while agenda:
         p = agenda.pop(0)
         entailed_symbols.append(p)

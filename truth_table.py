@@ -16,13 +16,12 @@ def extract_symbols(kb_clauses):
     symbols = set()
     
     for clause in kb_clauses:
-        # Remove special characters and split into parts
+        # delete special characters 
         clean_clause = clause.replace('=>', ' ').replace('&', ' ').replace(';', ' ')
         clean_clause = clean_clause.replace('(', ' ').replace(')', ' ')
         clean_clause = clean_clause.replace('~', ' ').replace('||', ' ')
         clean_clause = clean_clause.replace('<=>', ' ')
         
-        # Add each word as a symbol
         for word in clean_clause.split():
             if word.strip() and word.strip().isalnum():
                 symbols.add(word.strip())
@@ -40,12 +39,10 @@ def evaluate_expression(expr, model):
     Returns:
         bool: The truth value of the expression under the model
     """
-    # Remove all whitespace
+    # delete space
     expr = expr.replace(" ", "")
     
-    # Handle parentheses recursively
     if '(' in expr:
-        # Find matching parentheses
         count = 0
         start = None
         for i, char in enumerate(expr):
@@ -56,41 +53,40 @@ def evaluate_expression(expr, model):
             elif char == ')':
                 count -= 1
                 if count == 0 and start is not None:
-                    # Replace the parenthesized expression with its evaluation
                     inner_expr = expr[start+1:i]
                     inner_value = evaluate_expression(inner_expr, model)
                     expr = expr[:start] + str(inner_value) + expr[i+1:]
                     return evaluate_expression(expr, model)
     
-    # Handle biconditional (<=>)
+    #biconditional 
     if '<=>' in expr:
         left, right = expr.split('<=>', 1)
         left_value = evaluate_expression(left, model)
         right_value = evaluate_expression(right, model)
         return left_value == right_value
     
-    # Handle implication (=>)
+    #implication 
     if '=>' in expr:
         left, right = expr.split('=>', 1)
         left_value = evaluate_expression(left, model)
         right_value = evaluate_expression(right, model)
         return (not left_value) or right_value
     
-    # Handle disjunction (||)
+    #disjunction
     if '||' in expr:
         parts = expr.split('||')
         return any(evaluate_expression(part, model) for part in parts)
     
-    # Handle conjunction (&)
+    #conjunction
     if '&' in expr:
         parts = expr.split('&')
         return all(evaluate_expression(part, model) for part in parts)
     
-    # Handle negation (~)
+    #negation
     if expr.startswith('~'):
         return not evaluate_expression(expr[1:], model)
     
-    # Handle atomic propositions
+
     if expr.lower() == 'true':
         return True
     elif expr.lower() == 'false':
@@ -130,15 +126,15 @@ def tt_check_all(kb_clauses, query, symbols, model):
     if not symbols:
         if evaluate_kb(kb_clauses, model):
             return evaluate_expression(query, model), 1
-        return True, 0  # KB is false, so KB |= query is true vacuously
+        return True, 0  
     
     p, *rest = symbols
     
-    # Try p = true
+    #if p = true
     model[p] = True
     true_result, true_count = tt_check_all(kb_clauses, query, rest, model)
     
-    # Try p = false
+    #if p = false
     model[p] = False
     false_result, false_count = tt_check_all(kb_clauses, query, rest, model)
     
@@ -155,10 +151,8 @@ def tt_entails(kb_clauses, query):
     Returns:
         tuple: (bool, int) where bool is True if KB entails query and int is the number of models of KB
     """
-    # Extract symbols from both KB and query
     symbols = extract_symbols(kb_clauses)
     
-    # Add symbols from query
     query_symbols = extract_symbols([query])
     symbols.update(query_symbols)
     

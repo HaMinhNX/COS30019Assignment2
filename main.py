@@ -24,8 +24,6 @@ def main():
     if method not in ["TT", "FC", "BC"]:
         print("Invalid method. Use one of: TT, FC, BC")
         sys.exit(1)
-    if 
-    else
     
     try:
         kb_string, query_string = read_file(filename)

@@ -18,14 +18,13 @@ def read_file(filename):
         with open(filename, 'r') as file:
             content = file.read()
             
-            # Find the positions of TELL and ASK
+            # locatate TEll and Ask
             tell_pos = content.find('TELL')
             ask_pos = content.find('ASK')
             
             if tell_pos == -1 or ask_pos == -1:
                 raise ValueError("File must contain both TELL and ASK sections")
             
-            # Extract the parts
             kb_string = content[tell_pos+4:ask_pos].strip()
             query_string = content[ask_pos+3:].strip()
             
@@ -43,15 +42,13 @@ def is_horn_form(kb_string):
     Returns:
         bool: True if the knowledge base is in Horn form, False otherwise
     """
-    # Check for non-Horn operators
+    # whether if it is Hornform
     if '||' in kb_string or '<=' in kb_string or '<=>' in kb_string:
         return False
     
-    # Check clauses more carefully
     clauses = [clause.strip() for clause in kb_string.split(';') if clause.strip()]
     
     for clause in clauses:
-        # Check for negation not in front of a conclusion
         if '=>' in clause:
             premise, conclusion = clause.split('=>')
             if '~' in conclusion.strip():
@@ -71,7 +68,7 @@ def parse_kb(kb_string):
     Returns:
         list: List of clauses
     """
-    # Split by semicolon and remove whitespace
+    # delete space, semicolon
     clauses = [clause.strip() for clause in kb_string.split(';') if clause.strip()]
     
     return clauses
