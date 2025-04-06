@@ -1,0 +1,6 @@
+TELL
+fact1; fact2; fact3; fact4; fact5; fact6; fact7; fact8; fact9; fact10;
+fact11; fact12; fact13; fact14; fact15; fact16; fact17; fact18; fact19; fact20;
+important => target; important;
+ASK
+target

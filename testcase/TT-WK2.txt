@@ -1,0 +1,7 @@
+TELL
+a => z; b => z; c => z; d => z; e => z; f => z; g => z; h => z;
+i => z; j => z; k => z; l => z; m => z; n => z; o => z; p => z;
+q => z; r => z; s => z; t => z; u => z; v => z; w => z; x => z; y => z;
+a;
+ASK
+z
