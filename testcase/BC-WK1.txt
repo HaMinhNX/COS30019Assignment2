@@ -1,4 +1,4 @@
 TELL
-a => b; c => d; a || c;
+a => b; b => c; c => a; d => a; d;
 ASK
 b
